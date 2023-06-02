@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from rest_framework import status
 from django.db import IntegrityError
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 
 from .models import Wishlist
 from tracks.models import Track
@@ -13,7 +13,7 @@ from wishlists.serializers.populated import PopulatedWishlistSerializer
 
 class WishlistListView(APIView):
 
-  permission_classes = (IsAuthenticatedOrReadOnly, )
+  permission_classes = [IsAdminUser]
 
   def get(self, _request):
     wishlist = Wishlist.objects.all()
