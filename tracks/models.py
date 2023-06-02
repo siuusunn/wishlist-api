@@ -5,7 +5,7 @@ from django.db import models
 class Track(models.Model):
     title = models.CharField(max_length=50)
     artist = models.ForeignKey('artists.Artist', related_name='tracks', on_delete=models.CASCADE)
-    duration = models.DecimalField(max_digits=6,decimal_places=2,default=0.00)
+    duration = models.CharField(max_length=5, default="00:00")
     isrc = models.CharField(max_length=12, unique=True)
 
     def __str__(self):

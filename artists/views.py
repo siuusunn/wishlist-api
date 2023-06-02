@@ -45,8 +45,8 @@ class ArtistDetailView(APIView):
 
   def get(self, _request, pk):
       artist = self.get_artist(pk=pk)
-      serialized_comment = PopulatedArtistSerializer(artist)
-      return Response(serialized_comment.data, status=status.HTTP_200_OK)
+      serialized_artist = PopulatedArtistSerializer(artist)
+      return Response(serialized_artist.data, status=status.HTTP_200_OK)
 
   def put(self, request, pk):
     artist_to_edit = self.get_artist(pk=pk)
