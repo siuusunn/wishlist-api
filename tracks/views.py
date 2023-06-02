@@ -10,7 +10,7 @@ from rest_framework.exceptions import NotFound
 from django.db import IntegrityError
 
 from .models import Track
-from .serializers import TrackSerializer
+from .serializers.common import TrackSerializer
 
 # Create your views here.
 
