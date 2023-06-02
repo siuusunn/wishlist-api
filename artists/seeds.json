@@ -1,0 +1,23 @@
+[
+{
+  "model": "artists.artist",
+  "pk": 1,
+  "fields": {
+    "name": "Cookie Monster"
+  }
+},
+{
+  "model": "artists.artist",
+  "pk": 2,
+  "fields": {
+    "name": "The Road Runner"
+  }
+},
+{
+  "model": "artists.artist",
+  "pk": 3,
+  "fields": {
+    "name": "Big Bird"
+  }
+}
+]
