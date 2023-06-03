@@ -9,6 +9,7 @@ pylint = "*"
 djangorestframework = "*"
 psycopg2-binary = "*"
 pyjwt = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
