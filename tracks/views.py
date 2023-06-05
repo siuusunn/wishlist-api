@@ -11,6 +11,7 @@ from django.db import IntegrityError
 
 from .models import Track
 from .serializers.common import TrackSerializer
+from .serializers.populated import PopulatedTrackSerializer
 
 # Create your views here.
 
@@ -68,5 +69,5 @@ class TrackDetailView(APIView):
         # except Track.DoesNotExist:
         #     raise NotFound(detail="Can't find that track!")
         track = self.get_track(pk=pk)
-        serialized_track = TrackSerializer(track)
+        serialized_track = PopulatedTrackSerializer(track)
         return Response(serialized_track.data, status=status.HTTP_200_OK)
