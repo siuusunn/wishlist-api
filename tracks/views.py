@@ -22,7 +22,7 @@ class TrackListView(APIView):
 
     def get(self, _request):
         tracks = Track.objects.all() # Get everything from the tracks table in the database
-        serialized_tracks = TrackSerializer(tracks, many=True) # Run them through the serializer
+        serialized_tracks = PopulatedTrackSerializer(tracks, many=True) # Run them through the serializer
         return Response(serialized_tracks.data, status=status.HTTP_200_OK) # Return a response and a status
     
     def post(self, request):
