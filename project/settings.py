@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django-tracks',
+        'NAME': 'wishlist_app',
         'HOST': 'localhost',
         'PORT': 5432
     }
