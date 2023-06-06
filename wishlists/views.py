@@ -61,6 +61,10 @@ class WishlistDetailView(APIView):
 
   def put(self, request, pk):
     wishlist_to_update = self.get_wishlist(pk=pk)
+
+    if request.user != wishlist_to_update.owner:
+      return Response({"detail": "You are not authorized to edit this wishlist."})
+
     request.data['owner'] = request.user.id
     updated_wishlist = WishlistSerializer(wishlist_to_update, data=request.data)
     try:
