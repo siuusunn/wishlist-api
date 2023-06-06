@@ -45,6 +45,8 @@ class WishlistListView(APIView):
 
 class WishlistDetailView(APIView):
 
+  permission_classes = [IsAuthenticatedOrReadOnly]
+
   def get_wishlist(self, pk):
     try:
       return Wishlist.objects.get(pk=pk)
@@ -55,8 +57,8 @@ class WishlistDetailView(APIView):
 
     wishlist = self.get_wishlist(pk=pk)
 
-    if request.user != wishlist.owner:
-      return Response({"detail": "You are not authorized to view this wishlist."})
+    # if request.user != wishlist.owner:
+    #   return Response({"detail": "You are not authorized to view this wishlist."})
 
     try:
       
