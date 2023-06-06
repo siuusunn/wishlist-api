@@ -12,6 +12,8 @@ from django.db import IntegrityError
 from rest_framework import generics
 from django.db.models import Q
 
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+
 from .models import Track
 from .serializers.common import TrackSerializer
 from .serializers.populated import PopulatedTrackSerializer
@@ -19,6 +21,8 @@ from .serializers.populated import PopulatedTrackSerializer
 # Create your views here.
 
 class TrackListView(APIView):
+    
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, _request):
         tracks = Track.objects.all() # Get everything from the tracks table in the database
@@ -50,6 +54,8 @@ class TrackListView(APIView):
 
 class TrackDetailView(APIView):
     
+    permission_classes = [IsAuthenticated]
+    
     def get_track(self, pk):
         try:
             return Track.objects.get(pk=pk)
@@ -62,6 +68,8 @@ class TrackDetailView(APIView):
         return Response(serialized_track.data, status=status.HTTP_200_OK)
     
 class TrackSearchView(APIView):
+    
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get(self, request):
         isrc = request.query_params.get('isrc', '')
