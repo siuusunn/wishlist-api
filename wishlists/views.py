@@ -51,9 +51,15 @@ class WishlistDetailView(APIView):
     except Wishlist.DoesNotExist:
       raise NotFound(detail="Can't find that wishlist.")
 
-  def get(self, _request, pk):
+  def get(self, request, pk):
+
+    wishlist = self.get_wishlist(pk=pk)
+
+    if request.user != wishlist.owner:
+      return Response({"detail": "You are not authorized to view this wishlist."})
+
     try:
-      wishlist = self.get_wishlist(pk=pk)
+      
       serialized_wishlist = PopulatedWishlistSerializer(wishlist)
       return Response(serialized_wishlist.data, status=status.HTTP_200_OK)
     except Wishlist.DoesNotExist:
