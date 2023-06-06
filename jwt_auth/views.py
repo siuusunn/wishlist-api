@@ -51,7 +51,10 @@ class LoginView(APIView):
     return Response({'token': token, 'message': f"Welcome back {user_to_login.username}", "is_superuser": user_to_login.is_superuser})
 
 class UserListView(APIView):
-  def get(self, _request):
+  def get(self, request):
+    if not request.user.is_superuser:
+      raise PermissionDenied(detail="You are not authorized to access this resource.")
+    
     users = User.objects.all()
     serialized_users = UserSerializer(users, many=True)
     return Response(serialized_users.data, status=status.HTTP_200_OK)
@@ -60,13 +63,16 @@ class UserDetailView(APIView):
 
   # permission_classes = (IsAuthenticated, )
 
-  def get(self, _request, pk):
+  def get(self, request, pk):
+    if not request.user.is_superuser:
+      raise PermissionDenied(detail="You are not authorized to access this resource.")
+    
     try:
       user = User.objects.get(pk=pk)
       serialized_user = UserSerializer(user)
       return Response(serialized_user.data, status=status.HTTP_200_OK)
     except User.DoesNotExist:
-      raise NotFound(detail="Can't find that user! Your young cousins must've lost them.")
+      raise NotFound(detail="Can't find that user!")
 
   def put(self, request, pk):
     user_to_edit = User.objects.get(pk=pk)
