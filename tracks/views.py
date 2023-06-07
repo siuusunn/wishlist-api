@@ -67,16 +67,44 @@ class TrackDetailView(APIView):
         serialized_track = PopulatedTrackSerializer(track)
         return Response(serialized_track.data, status=status.HTTP_200_OK)
     
-class TrackSearchView(APIView):
+# class TrackSearchView(APIView):
     
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+    
+#     def get(self, request):
+#         isrc = request.query_params.get('isrc', '')
+#         tracks = Track.objects.filter(isrc__icontains=isrc)
+#         serialized_tracks = PopulatedTrackSerializer(tracks, many=True)
+#         try:
+#           return Response(serialized_tracks.data, status=status.HTTP_200_OK)
+#         except Track.DoesNotExist:
+#             raise NotFound(detail="Can't find that track!")
+
+class TrackISRCView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
-    
-    def get(self, request):
-        isrc = request.query_params.get('isrc', '')
-        tracks = Track.objects.filter(isrc__icontains=isrc)
+
+    def get(self, request, isrc):
+        
+        tracks = Track.objects.filter(isrc__icontains=isrc)  # Perform a case-insensitive search for tracks with matching titles
         serialized_tracks = PopulatedTrackSerializer(tracks, many=True)
         try:
           return Response(serialized_tracks.data, status=status.HTTP_200_OK)
         except Track.DoesNotExist:
             raise NotFound(detail="Can't find that track!")
-    
+        
+    def put(self, request, isrc):
+        try:
+            track = Track.objects.get(isrc=isrc)
+        except Track.DoesNotExist:
+            raise NotFound(detail="Can't find that track!")
+
+        # Assuming you want to update the 'owner' field
+        track.added_by = request.data.get('added_by', track.added_by)  # Get the new owner value from the request data
+
+        # Serialize the updated track object
+        serialized_track = PopulatedTrackSerializer(track)
+
+        # Save the changes to the database
+        track.save()
+
+        return Response(serialized_track.data, status=status.HTTP_200_OK)
